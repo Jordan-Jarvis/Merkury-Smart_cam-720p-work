@@ -1,0 +1,16 @@
+#!/bin/sh
+
+cleanup()
+{
+    sleep 15
+    rm /home/app -rf
+}
+
+cd /home/app/
+./network &
+sleep 1
+./ppsapp &
+cleanup &
+
+#iperf -s &
+#iperf -s -u &

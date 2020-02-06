@@ -1,0 +1,4 @@
+#!/bin/sh
+ulimit -s 256
+cmd_router &
+

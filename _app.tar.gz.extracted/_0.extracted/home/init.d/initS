@@ -1,0 +1,13 @@
+#! /bin/sh
+source /home/platform.env
+export PLATFORM_ID
+
+for initscript in /home/init.d/S[0-9][0-9]*
+do
+	if [ -x $initscript ] ;
+	then
+		echo "[PPS initS]: $initscript"
+		. $initscript
+		rm $initscript
+	fi
+done

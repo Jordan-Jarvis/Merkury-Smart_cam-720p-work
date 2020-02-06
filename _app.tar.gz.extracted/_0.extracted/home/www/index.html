@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<!--<link rel="stylesheet" href="new_file.css" />-->
+		<style>
+			pps_index_style
+		</style>
+	</head>
+	<body>
+		<div class="content clearfix">
+			<ul>
+				<li id="about" style="background: #12987F;"><a href="">关于</a></li>
+				<li id="upg"><a href="flash/upgrade/release_package">升级</a></li>
+			</ul>
+			<!--设备信息-->
+			<div class="right eq_info">
+				<div class="info">
+					<span>设备名称</span>
+					<span>pps_device_name</span>
+				</div>
+				<div class="info">
+					<span>型号</span>
+					<span>pps_device_model</span>
+				</div>
+				<div class="info">
+					<span>序列号</span>
+					<span>pps_device_sn</span>
+				</div>
+			</div>
+			<!--关于-->
+			
+		</div>
+		
+	</body>
+</html>
+<script type="text/javascript">
+
+(function(){
+    var xmlhttp;
+    function myRequest(method, address, params, fn) {
+        if(window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        if(method == "get" || method == "GET") {
+            address = address + "?" + params;
+        }
+
+        xmlhttp.open(method, address, true);
+
+        if(method == "GET" || method == "get") {
+            xmlhttp.send();
+        } else {
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(params);
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                fn(xmlhttp.responseText);
+            }
+        }
+
+    };
+    
+    //
+    var curl,params
+    	
+    	//点击关于
+	    var about = document.getElementById("about");
+
+		about.onclick = function(){
+			var name = document.getElementById("name")
+			var model = document.getElementById("model")
+			var num = document.getElementById("num")
+			
+			//myRequest('post',curl,params,function(res){
+				name.innerText="12344"
+				model.innerText="12344"
+				num.innerText="12344"
+			//})
+		}
+		
+       
+	})();
+
+</script>

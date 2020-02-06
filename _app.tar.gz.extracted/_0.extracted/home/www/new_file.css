@@ -1,0 +1,18 @@
+*{padding: 0;margin: 0;}
+.content{width: 530px;margin:100px auto;}
+/*清浮动*/
+.clearfix:after{clear: both;content: ".";display: block;font-size: 0;visibility: hidden;height: 0;_zoom:1;}
+ul{list-style: none;width: 100px;height: 400px;float: left;background: #11CDBA;}
+ul li{width: 100%;text-align: center;line-height: 49px;height: 49px;border-bottom: 1px solid black;}
+ul li:hover,.btn:hover,#delete:hover,#delete1:hover{cursor: pointer;	}
+.right{border: 1px solid black;width: 400px;height: 400px;float: right;}
+/*设备信息*/
+.dis_n{display: none;}
+.info{margin: 20px 0 20px 50px;}
+.info span{display: inline-block;width: 100px;}
+/*关于*/
+/*固件信息*/
+.fir_info{width: 300px;height: 150px;border: 1px solid black;margin: 10px auto;}
+.btn{display: inline-block;text-align: center;width: 80px;height: 20px;line-height: 20px;border: 1px solid black;margin: 0 50px;background:#11CDBA;}
+.p_a{position: absolute;height: 200px;top: 0;left: 0;right: 0;bottom: 0;margin: auto;background: #fff;}
+#delete,#delete1{width: 15px;height: 15px;text-align: center;line-height: 15px;border: 1px solid black;border-radius: 50%;position: absolute;right: 10px;bottom: 10px;}

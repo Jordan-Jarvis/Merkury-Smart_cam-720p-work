@@ -1,0 +1,3 @@
+# udhcpd config
+mkdir -p /var/lib/misc
+touch /var/lib/misc/udhcpd.leases

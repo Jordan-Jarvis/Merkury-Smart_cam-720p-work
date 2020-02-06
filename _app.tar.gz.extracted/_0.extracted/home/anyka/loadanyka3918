@@ -1,0 +1,55 @@
+#!/bin/sh
+# Useage: ./load3518e [ -r|-i|-a ] [ sensor ]
+#         -r : rmmod all modules
+#         -i : insmod all modules
+#    default : rmmod all moules and then insmod them
+#
+
+
+####################Variables Definition##########################
+
+
+SNS_TYPE=sc1245            # sensor type
+
+##################################################################
+
+insert_ko()
+{
+	case $SNS_TYPE in
+		sc1245)
+			cp /home/anyka/isp_sc1245.conf /home/ispcfg/
+			insmod sensor_sc1245.ko
+			;;
+		soih62|soih62mipi)
+			cp /home/anyka/isp_h62.conf /home/ispcfg/
+			insmod sensor_h62.ko
+			;;
+		*)
+			echo "xxxx Invalid sensor type $SNS_TYPE xxxx"
+			report_error;;
+	esac
+	
+	insmod akcamera.ko
+	insmod ak_info_dump.ko
+}
+
+######################parse arg###################################
+b_arg_sensor=0
+
+for arg in $@
+do
+	
+	
+	if [ $b_arg_sensor -eq 1 ] ; then
+		b_arg_sensor=0;
+		SNS_TYPE=$arg;
+	fi
+	
+	case $arg in
+		"-sensor")
+			b_arg_sensor=1;
+			;;
+	esac
+done
+echo "-------------->sensor type $SNS_TYPE "
+insert_ko;

@@ -1,0 +1,22 @@
+#!/bin/sh
+mkdir /var/log
+mkdir /home/ispcfg
+echo 10 > /var/log/ak_print_level
+echo /mnt/mmc01/core-%e-%p-%t-%s > /proc/sys/kernel/core_pattern
+cd /home/drv
+insmod Strnio.ko
+insmod otg-hs.ko
+insmod motor.ko
+sleep 3
+insmod 8188fu.ko
+PPS_PARAMS=`cat /proc/ppshal/dev_info`
+
+[ -e /home/anyka ] && cd /home/anyka && ./loadanyka3918 -i $PPS_PARAMS
+
+[ -e /lib/libcurl.so.4.4.0 ] && ln -s /lib/libcurl.so.4.4.0 /lib/libcurl.so.4 && ln -s /lib/libcurl.so.4.4.0 /lib/libcurl.so
+
+rm /home/drv -rf
+[ -e /home/anyka ] && rm /home/anyka -rf
+
+ifconfig lo up
+

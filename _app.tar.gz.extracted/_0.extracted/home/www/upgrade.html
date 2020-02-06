@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="new_file.css" />
+		<style>
+			pps_index_style
+		</style>
+	</head>
+	<body>
+		<div class="content clearfix">
+			<ul>
+				<li id="about"><a href="http://www.baidu.com">关于</a></li>
+				<li id="upg"  style="background: #12987F;><a href="">升级</a></li>
+			</ul>
+			
+			<!--关于-->
+			<div class="right firInfo">
+				<!--固件信息-->
+				<div class="fir_info">
+					
+				</div>
+				<form id="formid" method="POST" action="/flash/upgrade/release_package"   enctype="multipart/form-data">
+					<input style="margin-left: 50px;" type="file" name="file" /> <br/><br />
+					<input id="upgrade" class="btn" type="button" value="升级" />
+					<input id="reset" class="btn" type="button" value="重启" />
+				</form>
+			</div>
+		</div>
+		<!--升级-->
+		<div class="right p_a dis_n">
+			<div class="info">
+				<span>发送进度</span>
+				<progress></progress>
+			</div>
+			<div class="info">
+				<span>升级进度</span>
+				<progress id="upgVal" value="0" max="100"></progress>
+				<i id="uV">0</i>
+			</div>
+			<div class="info">
+				<span>是否重启</span>
+				<input type="button" value="是" disabled="disabled"/>
+				<input type="button" value="否" disabled="disabled"/>
+				<div id="delete">X</div>
+			</div>
+		</div>
+		<!--重启-->
+		<div class="right p_a dis_n">
+			<div class="info">
+				<span>是否重启</span>
+				<input type="button" value="是" />
+				<input type="button" value="否" />
+				<div id="delete1">X</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	
+(function(){
+	var xmlhttp;
+    function myRequest(method, address, params, fn) {
+        if(window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        if(method == "get" || method == "GET") {
+            address = address + "?" + params;
+        }
+
+        xmlhttp.open(method, address, true);
+
+        if(method == "GET" || method == "get") {
+            xmlhttp.send();
+        } else {
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(params);
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                fn(xmlhttp.responseText);
+            }
+        }
+
+    };
+    
+    
+    
+    
+    	
+    	//点击关于
+	    var about = document.getElementById("about");
+	    var eq_info = document.getElementsByClassName("eq_info")[0];
+	    var firInfo = document.getElementsByClassName("firInfo")[0];
+	    var upg = document.getElementById("upg");
+		//点击升级
+		
+
+		//点击升级里边的升级
+		var upgrade = document.getElementById("upgrade");
+	    var p_a = document.getElementsByClassName("p_a")[0];
+		upgrade.onclick = function(){
+			document.getElementById("formid").submit();
+			p_a.style.display = "block"
+			var aaa = window.location.hash;
+			var cu = aaa + "/flash/upgrade/release_package";
+			myRequest('get',cu,function(res){
+				var data = eval('('+res+')');
+				var code = data.resultCode;
+				if(code == "200"){
+					var upgVal = document.getElementById("upgVal")
+				    var uV = document.getElementById("uV")
+				    
+				    var curl = aaa + "/flash/upgrade/percent";
+					myRequest('get',curl,function(res){
+				    	var data = eval('('+res+')')
+				    	data = data.precent
+				    	if(data<0){
+				    		data = 0;
+				    	}
+				    	upgVal.value = data;
+				    	uV.innerText = data + "%";
+				    })
+				}
+			})
+			
+			var upgVal = document.getElementById("upgVal")
+		    var uV = document.getElementById("uV")
+		    
+		    curl = aaa + "/flash/upgrade/percent";
+			myRequest('get',curl,function(res){
+		    	var data = eval('('+res+')')
+		    	data = data.DATA
+		    	if(data<0){
+		    		data = 0;
+		    	}
+		    	upgVal.value = data;
+		    	uV.innerText = data + "%";
+		    })
+		}
+       //点击X
+       var del = document.getElementById("delete");
+       var del1 = document.getElementById("delete1");
+       del.onclick = function(){
+       		p_a.style.display = "none"
+       }
+       del1.onclick = function(){
+       		res.style.display = "none"
+       }
+       //点击重启
+       var resBtn = document.getElementById("reset");
+       var res = document.getElementsByClassName("p_a")[1];
+       resBtn.onclick = function(){
+       		res.style.display = "block"
+       }
+})();
+
+</script>

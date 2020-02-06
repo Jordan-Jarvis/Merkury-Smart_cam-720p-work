@@ -1,0 +1,61 @@
+#!/bin/sh
+
+name=$1
+action=$2
+
+[ "$name" = "" ] && exit
+[ "$action" = "" ] && action=status
+
+kill_proc()
+{
+	pid=`lookup_proc $1`
+	[ "$pid" = "" ] && return 0
+	# send SIGSTOP to pid
+	kill $pid
+}
+
+telnetd_start()
+{
+	echo "telnetd service ... [start]"
+	telnetd &
+	echo "telnetd service ... [start] ok"
+}
+
+telnetd_stop()
+{
+	echo "telnetd service ... [stop]"
+	kill_proc telnetd
+	echo "telnetd service ... [stop] ok"
+}
+
+dropbear_start()
+{
+	echo "dropbear service ... [start]"
+	dropbear
+	echo "dropbear service ... [start] ok"
+}
+
+dropbear_stop()
+{
+	echo "dropbear service ... [stop]"
+	kill_proc dropbear
+	echo "dropbear service ... [stop] ok"
+}
+
+if [ "$name" = "telnetd" ]; then
+	if [ "$action" = "start" ]; then
+		telnetd_start
+	elif [ "$action" = "stop" ]; then
+		telnetd_stop
+	fi
+	exit
+fi
+
+if [ "$name" = "dropbear" ]; then
+	if [ "$action" = "start" ]; then
+		dropbear_start
+	elif [ "$action" = "stop" ]; then
+		dropbear_stop
+	fi
+	exit
+fi

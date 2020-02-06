@@ -1,0 +1,52 @@
+# set hostapd config file
+# mac=`ifconfig wlan0 | grep 'HWaddr' | awk '{print $5}'`
+flag=`ppsconfig -n`
+if [ -z $flag ]; then
+	flag=123456
+fi
+
+# gala version
+if [ "$PLATFORM_ID" == "c2-npsaft" ]; then
+    ssid=GALA_$flag
+elif [ "$PLATFORM_ID" == "c2-hhy" ]; then
+    vSpeed1=49
+    vMini3C=11
+    vMini6=64
+    vMini6S=65
+    vMini6C=66
+
+    device_type=`ppsconfig -t`
+
+    if [ $device_type -eq $vMini3C ]; then
+        ssid=HHY041001104VMINI3C$flag
+    elif [ $device_type -eq $vMini6 ]; then
+        ssid=HHY041002104VMINI6S$flag
+    elif [ $device_type -eq $vMini6S ]; then
+        ssid=HHY041002104VMINI6S$flag
+    elif [ $device_type -eq $vMini6C ]; then
+        ssid=HHY041002104VMINI6S$flag
+    elif [ $device_type -eq $vSpeed1 ]; then
+        ssid=HHY042003204VSPEED1$flag
+    fi
+
+    #ssid=HHY0310001030000000$flag
+elif [ "$PLATFORM_ID" == "c2-tuya" ]; then
+    ssid=SmartLife-$flag
+elif [ "$PLATFORM_ID" == "c2-tuya2" ]; then
+    ssid=SmartLife-$flag
+elif [ "$PLATFORM_ID" == "c2-tuya_yimu" ]; then
+    ssid=SmartLife-$flag
+elif [ "$PLATFORM_ID" == "c2-tuya_geeni" ]; then
+    ssid=Geeni-$flag
+elif [ "$PLATFORM_ID" == "c2-goclever" ]; then
+    ssid=GOCLEVER-$flag
+# no change
+#elif [ "$PLATFORM_ID" == "c2-extel" ]; then
+#    ssid=EXTEL-$flag
+else
+    ssid=STRN_$flag
+fi
+
+echo "ssid:$ssid"
+sed 's/rtwap/'"$ssid"'/' /etc/rtl_hostapd_2G.conf > /var/tt2.conf
+#rm /etc/rtl_hostapd_2G.conf

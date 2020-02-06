@@ -1,0 +1,38 @@
+#!/bin/sh
+#echo PLATFORM_ID=c2-neutral /home/platform.env
+# kernel printk level
+if [ 1 ]; then
+	echo 1 1 1 1 > /proc/sys/kernel/printk
+	echo 1 > /proc/sys/vm/overcommit_memory
+else
+	echo 7 4 1 7 > /proc/sys/kernel/printk
+	echo 2 > /proc/sys/vm/overcommit_memory
+	echo 90 > /proc/sys/vm/overcommit_ratio
+	echo 0 > /proc/sys/vm/panic_on_oom
+	echo 10 > /proc/sys/kernel/panic
+	# default 163840
+	#echo 32768 > /proc/sys/net/core/rmem_default
+	#echo 32768 > /proc/sys/net/core/wmem_default
+	#echo 65536 > /proc/sys/net/core/rmem_max
+	#echo 65536 > /proc/sys/net/core/wmem_max
+fi
+
+#disable ipv6, try to fix getaddrinfo memory leak problem, but not work
+echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+
+
+mkdir /home/cfg
+mount -t jffs2 /dev/mtdblock6 /home/cfg
+if [ -f "/home/cfg/sounds.tar.gz" ];then
+    if [ ! -d "/home/voice_note" ];then
+        mkdir /home/voice_note
+    fi
+    tar zxf /home/cfg/sounds.tar.gz -C /home/voice_note
+fi
+ln -s /home/cfg /devinfo
+rm -rf /usr/sbin/udhcpd
+
+
+# environment
+export PPS_CONFIG_PATH=/home/cfg/
+export PPS_MQTT_CAFILE=/home/ca.crt
